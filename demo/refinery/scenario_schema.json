@@ -1,0 +1,61 @@
+{
+  "model_name": "Synthetic Refinery Planning",
+  "category": "Refinery & Petrochemical Operations",
+  "parameters": [
+    {
+      "key": "crude_a_price",
+      "label": "Crude A Price ($/bbl)",
+      "target_type": "objective",
+      "target_name": "CRUDE_A",
+      "default_value": 72.5,
+      "min": 50.0,
+      "max": 120.0,
+      "step": 0.5,
+      "description": "Feedstock cost per barrel for Light Sweet Crude A"
+    },
+    {
+      "key": "crude_b_price",
+      "label": "Crude B Price ($/bbl)",
+      "target_type": "objective",
+      "target_name": "CRUDE_B",
+      "default_value": 78.0,
+      "min": 50.0,
+      "max": 130.0,
+      "step": 0.5,
+      "description": "Feedstock cost per barrel for Heavy Sour Crude B"
+    },
+    {
+      "key": "gasoline_demand",
+      "label": "Gasoline Minimum Demand (bbl/day)",
+      "target_type": "parameters",
+      "target_name": "GASOLINE_DEMAND",
+      "default_value": 25000.0,
+      "min": 10000.0,
+      "max": 50000.0,
+      "step": 500.0,
+      "description": "Contractual minimum delivery requirement for 93-Octane Gasoline"
+    },
+    {
+      "key": "diesel_demand",
+      "label": "Diesel Minimum Demand (bbl/day)",
+      "target_type": "parameters",
+      "target_name": "DIESEL_DEMAND",
+      "default_value": 30000.0,
+      "min": 15000.0,
+      "max": 60000.0,
+      "step": 500.0,
+      "description": "Contractual minimum delivery requirement for Ultra-Low Sulfur Diesel"
+    },
+    {
+      "key": "cdu_capacity",
+      "label": "Atmospheric Distillation Capacity (bbl/day)",
+      "target_type": "parameters",
+      "target_name": "CDU_CAP",
+      "default_value": 100000.0,
+      "min": 60000.0,
+      "max": 120000.0,
+      "step": 1000.0,
+      "description": "Maximum crude distillation unit throughput limit"
+    }
+  ]
+}

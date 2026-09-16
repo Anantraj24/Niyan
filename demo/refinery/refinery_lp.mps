@@ -1,0 +1,48 @@
+NAME          REFINERY_LP
+ROWS
+ N  PROFIT
+ L  CDU_CAP
+ L  FCC_CAP
+ L  REFORMER_CAP
+ G  GASOLINE_DEMAND
+ G  DIESEL_DEMAND
+ G  JET_FUEL_DEMAND
+ L  CRUDE_A_SUPPLY
+ L  CRUDE_B_SUPPLY
+ L  CRUDE_C_SUPPLY
+COLUMNS
+    CRUDE_A     PROFIT            -72.5
+    CRUDE_A     CDU_CAP             1.0
+    CRUDE_A     CRUDE_A_SUPPLY      1.0
+    CRUDE_B     PROFIT            -78.0
+    CRUDE_B     CDU_CAP             1.0
+    CRUDE_B     CRUDE_B_SUPPLY      1.0
+    CRUDE_C     PROFIT            -65.0
+    CRUDE_C     CDU_CAP             1.0
+    CRUDE_C     CRUDE_C_SUPPLY      1.0
+    GASOLINE    PROFIT            118.0
+    GASOLINE    GASOLINE_DEMAND     1.0
+    GASOLINE    FCC_CAP             0.4
+    DIESEL      PROFIT            104.0
+    DIESEL      DIESEL_DEMAND       1.0
+    DIESEL      REFORMER_CAP        0.3
+    JET_FUEL    PROFIT             98.0
+    JET_FUEL    JET_FUEL_DEMAND     1.0
+RHS
+    RHS1        CDU_CAP        100000.0
+    RHS1        FCC_CAP         45000.0
+    RHS1        REFORMER_CAP    30000.0
+    RHS1        GASOLINE_DEMAND 25000.0
+    RHS1        DIESEL_DEMAND   30000.0
+    RHS1        JET_FUEL_DEMAND 15000.0
+    RHS1        CRUDE_A_SUPPLY  50000.0
+    RHS1        CRUDE_B_SUPPLY  40000.0
+    RHS1        CRUDE_C_SUPPLY  30000.0
+BOUNDS
+ UP BND1        CRUDE_A        50000.0
+ UP BND1        CRUDE_B        40000.0
+ UP BND1        CRUDE_C        30000.0
+ UP BND1        GASOLINE       60000.0
+ UP BND1        DIESEL         50000.0
+ UP BND1        JET_FUEL       30000.0
+ENDATA

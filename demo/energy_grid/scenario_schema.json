@@ -1,0 +1,39 @@
+{
+  "scenario_name": "Grid Stress & Carbon Cap Tightening",
+  "domain": "Electric Power Transmission & Dispatch",
+  "parameters": [
+    {
+      "key": "gas_price_multiplier",
+      "display_name": "Natural Gas Price Index",
+      "type": "slider",
+      "min": 0.5,
+      "max": 3.0,
+      "step": 0.1,
+      "default": 1.0,
+      "unit": "x",
+      "impact": "Scales generation cost for GEN_GAS_1 and GEN_GAS_2."
+    },
+    {
+      "key": "carbon_cap_target",
+      "display_name": "Regional Carbon Cap",
+      "type": "slider",
+      "min": 150.0,
+      "max": 350.0,
+      "step": 10.0,
+      "default": 280.0,
+      "unit": "tons/hr",
+      "impact": "Tightens RHS of CARBON_CAP constraint, forcing dispatch of cleaner units."
+    },
+    {
+      "key": "line_derating",
+      "display_name": "Transmission Thermal Line Derating",
+      "type": "slider",
+      "min": 0.5,
+      "max": 1.0,
+      "step": 0.05,
+      "default": 1.0,
+      "unit": "ratio",
+      "impact": "Derates thermal capacity limits on key transmission lines (LINE_1_3, LINE_3_5)."
+    }
+  ]
+}

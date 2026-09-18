@@ -114,6 +114,13 @@ Build out the production-grade Frontend UI in `frontend/` implementing the Indus
     8. Benchmark Suite live differential execution (CPU vs CUDA with 100% numerical equivalence).
   - WebP session recording saved to artifacts: `niyamx_full_system_test_1789752338978.webp`.
 
+- [x] Unified Hosting & Containerization:
+  - Multi-stage production `Dockerfile`: Node.js 20 Alpine stage compiles the React 19 / Vite SPA, and Python 3.11-slim stage hosts the FastAPI REST/SSE backend and sovereign solver kernel with automated healthchecks.
+  - Single-port serving: FastAPI dynamically mounts and serves `frontend/dist` static assets at `/` with HTML5 SPA routing fallback whenever built, eliminating CORS and reverse proxy requirements.
+  - `docker-compose.yml`: Out-of-the-box local and cloud container orchestration with persistent volume mapping for `.niyam/` data, models, and cryptographic Proof Packs.
+  - `.dockerignore`: Excludes caches, virtualenvs, git history, and node_modules from container contexts.
+  - Automated test coverage in `api/tests/test_api.py` (`test_root_serves_frontend`).
+
 ## In-Progress Work
 - [ ] Push all updates to remote repository.
 
@@ -121,7 +128,7 @@ Build out the production-grade Frontend UI in `frontend/` implementing the Indus
 - [ ] Final user review and release tag.
 
 ## Known Bugs / Blockers
-- None. System is fully operational, thoroughly tested, and production ready.
+- None. System is fully operational, thoroughly tested, containerized, and production ready for hosting.
 
 ## Important Decisions
 - **ADR-001**: Local-first modular monolith over microservices.
@@ -129,10 +136,11 @@ Build out the production-grade Frontend UI in `frontend/` implementing the Indus
 - **ADR-003**: SSE over WebSockets for live unidirectional solver iteration telemetry.
 - **ADR-004**: Verifier independence — `niyam-verify` executable completely decoupled from solver logic.
 - **ADR-005**: Unbuffered subprocess stdout execution (`-u`) ensures instant real-time telemetry streaming on Windows.
+- **ADR-006**: Unified single-port containerized hosting — FastAPI statically serves the precompiled Vite SPA on `/` when deployed in production, allowing deployment as a single container on Cloud Run, Render, Railway, AWS ECS/EC2, or on-premise sovereign servers.
 
 ## Git / Branch Status
 - Branch: `main`
 - Last pushed commit: `58d8ac7`
 
 ## Exact Next Step
-Stage, commit, and push full system audit records to `origin/main`.
+Stage, commit (`feat(deploy): add multi-stage Dockerfile, docker-compose, and unified SPA serving`), and push to `origin/main`.

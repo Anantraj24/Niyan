@@ -68,11 +68,20 @@ app.include_router(solves.router, prefix=prefix)
 app.include_router(verification.router, prefix=prefix)
 app.include_router(benchmarks.router, prefix=prefix)
 
-@app.get("/")
-def root():
-    return {
-        "app": settings.app_name,
-        "version": settings.app_version,
-        "docs": "/docs",
-        "api_prefix": prefix
-    }
+# Mount Production Frontend (if built)
+from pathlib import Path
+from fastapi.staticfiles import StaticFiles
+
+dist_dir = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"
+if dist_dir.exists():
+    app.mount("/", StaticFiles(directory=str(dist_dir), html=True), name="frontend")
+else:
+    @app.get("/")
+    def root():
+        return {
+            "app": settings.app_name,
+            "version": settings.app_version,
+            "docs": "/docs",
+            "api_prefix": prefix
+        }
+

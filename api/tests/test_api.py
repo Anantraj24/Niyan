@@ -25,6 +25,14 @@ async def test_health():
         assert data["verifier_available"] is True
 
 @pytest.mark.anyio
+async def test_root_serves_frontend():
+    async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as ac:
+        res = await ac.get("/")
+        assert res.status_code == 200
+        # When frontend/dist is built, it serves text/html; otherwise it serves application/json
+        assert "text/html" in res.headers["content-type"] or "application/json" in res.headers["content-type"]
+
+@pytest.mark.anyio
 async def test_hardware():
     async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as ac:
         res = await ac.get("/api/v1/hardware")

@@ -301,6 +301,8 @@ export const App: React.FC = () => {
 
           {activeTab === 'delta' && (
             <DeltaSolveView
+              modelId={selectedModelId}
+              modelName={modelDetail?.display_name}
               baselineSolve={baselineSolve}
               deltaSolve={deltaSolve}
               onExecuteDeltaSolve={handleExecuteDeltaSolve}

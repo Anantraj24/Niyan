@@ -62,6 +62,12 @@ export async function getModel(modelId: string): Promise<ModelDetail> {
   return res.json();
 }
 
+export async function getScenarioSchema(modelId: string): Promise<any> {
+  const res = await fetch(`${BASE_URL}/models/${modelId}/schema`);
+  if (!res.ok) return null;
+  return res.json();
+}
+
 export async function analyzeModel(modelId: string, versionId?: string): Promise<AnalysisResponse> {
   const res = await fetch(`${BASE_URL}/models/${modelId}/analyze`, {
     method: 'POST',

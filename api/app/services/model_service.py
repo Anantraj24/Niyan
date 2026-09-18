@@ -112,3 +112,6 @@ class ModelService:
             created_at=record.created_at,
             updated_at=record.updated_at
         )
+
+    def get_scenario_schema(self, m_id: str) -> Optional[ScenarioSchemaRecord]:
+        return self.repo.get_scenario_schema(m_id)

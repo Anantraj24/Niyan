@@ -1,7 +1,9 @@
+import json
 from typing import List, Optional
 from fastapi import APIRouter, Depends, UploadFile, File, Form, status
 from sqlalchemy.orm import Session
 from api.app.db.session import get_db
+from api.app.core.errors import NotFoundException
 from api.app.services.model_service import ModelService
 from api.app.schemas.models import ModelImportResponse, ModelSummary, ModelDetail
 
@@ -32,3 +34,12 @@ def list_models(db: Session = Depends(get_db)):
 def get_model(model_id: str, db: Session = Depends(get_db)):
     service = ModelService(db)
     return service.get_model(model_id)
+
+@router.get("/{model_id}/schema")
+def get_scenario_schema(model_id: str, db: Session = Depends(get_db)):
+    service = ModelService(db)
+    rec = service.get_scenario_schema(model_id)
+    if not rec:
+        raise NotFoundException("ScenarioSchema", model_id)
+    return json.loads(rec.schema_json)
+

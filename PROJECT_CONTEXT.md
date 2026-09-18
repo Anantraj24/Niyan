@@ -94,6 +94,10 @@ Build out the production-grade Frontend UI in `frontend/` implementing the Indus
 - [x] In-Browser Model Importer Modal:
   - Added interactive model import modal in [ModelOverviewView.tsx](file:///e:/Niyan/frontend/src/features/ModelOverviewView.tsx) with file drag-and-drop, metadata inputs, and multipart/form-data upload to `/api/v1/models/import`.
   - Wired live model selection reload and automatic Model X-Ray diagnostic trigger on import in [App.tsx](file:///e:/Niyan/frontend/src/App.tsx).
+- [x] Dynamic Scenario Schema Loading & What-If Controls:
+  - Backend: Added `GET /api/v1/models/{model_id}/schema` endpoint in [models.py](file:///e:/Niyan/api/app/routers/models.py) and `get_scenario_schema` in [model_service.py](file:///e:/Niyan/api/app/services/model_service.py).
+  - Frontend: Enhanced [DeltaSolveView.tsx](file:///e:/Niyan/frontend/src/features/DeltaSolveView.tsx) to query and dynamically render model-specific operating condition shock sliders (e.g. natural gas index, carbon cap target, line derating for energy grid; crude price and diesel demand for refinery).
+  - Automated Testing: Added scenario schema validation step to [test_api.py](file:///e:/Niyan/api/tests/test_api.py).
 
 ## In-Progress Work
 - [ ] Push all updates to remote repository.
@@ -113,7 +117,7 @@ Build out the production-grade Frontend UI in `frontend/` implementing the Indus
 
 ## Git / Branch Status
 - Branch: `main`
-- Last pushed commit: `9903b5c`
+- Last commit: `c54875d`
 
 ## Exact Next Step
-Stage, commit, and push in-browser model importer feature to `origin/main`.
+Stage, commit, and push dynamic scenario schema feature to `origin/main`.

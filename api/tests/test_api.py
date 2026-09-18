@@ -44,10 +44,14 @@ async def test_models_flow_and_solve():
         assert len(models) >= 1
         model_id = models[0]["model_id"]
 
-        # 2. Get model detail
+        # 2. Get model detail & scenario schema
         res = await ac.get(f"/api/v1/models/{model_id}")
         assert res.status_code == 200
         assert res.json()["model_id"] == model_id
+
+        schema_res = await ac.get(f"/api/v1/models/{model_id}/schema")
+        if schema_res.status_code == 200:
+            assert "parameters" in schema_res.json()
 
         # 3. Model X-Ray Analysis
         res = await ac.post(f"/api/v1/models/{model_id}/analyze")

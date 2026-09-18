@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GitCompare, Zap, TrendingUp } from 'lucide-react';
 import type { SolveStatusResponse } from '../api/types';
 import { StatusBadge } from '../components/StatusBadge';
+import { getScenarioSchema } from '../api/client';
 
 interface DeltaSolveViewProps {
+  modelId?: string;
+  modelName?: string;
   baselineSolve?: SolveStatusResponse;
   deltaSolve?: SolveStatusResponse;
   onExecuteDeltaSolve: (changes: Record<string, any>) => void;
@@ -11,28 +14,57 @@ interface DeltaSolveViewProps {
 }
 
 export const DeltaSolveView: React.FC<DeltaSolveViewProps> = ({
+  modelId,
+  modelName,
   baselineSolve,
   deltaSolve,
   onExecuteDeltaSolve,
   isResolving = false
 }) => {
-  // Scenario Shock Parameters
-  const [crudeAPrice, setCrudeAPrice] = useState<number>(78.4); // +8% from 72.5
+  // Dynamic Model Scenario Schema
+  const [schema, setSchema] = useState<any | null>(null);
+  const [paramValues, setParamValues] = useState<Record<string, number>>({});
+
+  // Fallback refinery shock parameters
+  const [crudeAPrice, setCrudeAPrice] = useState<number>(78.4);
   const crudeBPrice = 78.0;
-  const [dieselDemand, setDieselDemand] = useState<number>(31200); // +4% from 30000
+  const [dieselDemand, setDieselDemand] = useState<number>(31200);
   const [cduCapacity, setCduCapacity] = useState<number>(95000);
 
-  const handleRunDeltaSolve = () => {
-    onExecuteDeltaSolve({
-      objective: {
-        CRUDE_A: -crudeAPrice,
-        CRUDE_B: -crudeBPrice
-      },
-      parameters: {
-        DIESEL_DEMAND: dieselDemand,
-        CDU_CAP: cduCapacity
+  useEffect(() => {
+    if (!modelId) return;
+    getScenarioSchema(modelId).then((sc) => {
+      if (sc && sc.parameters && sc.parameters.length > 0) {
+        setSchema(sc);
+        const defaults: Record<string, number> = {};
+        sc.parameters.forEach((p: any) => {
+          defaults[p.key] = p.default ?? p.min;
+        });
+        setParamValues(defaults);
+      } else {
+        setSchema(null);
       }
     });
+  }, [modelId]);
+
+  const handleRunDeltaSolve = () => {
+    if (schema && schema.parameters) {
+      onExecuteDeltaSolve({
+        scenario_name: schema.scenario_name,
+        parameters: paramValues
+      });
+    } else {
+      onExecuteDeltaSolve({
+        objective: {
+          CRUDE_A: -crudeAPrice,
+          CRUDE_B: -crudeBPrice
+        },
+        parameters: {
+          DIESEL_DEMAND: dieselDemand,
+          CDU_CAP: cduCapacity
+        }
+      });
+    }
   };
 
   const speedup =
@@ -54,7 +86,7 @@ export const DeltaSolveView: React.FC<DeltaSolveViewProps> = ({
           <h2 className="text-lg font-bold tracking-tight text-slate-100">DELTASOLVE: WARM RE-OPTIMIZATION</h2>
         </div>
         <p className="text-xs text-slate-400 mt-1">
-          Simulate market shocks (feedstock costs, product demand, operational capacity) and warm-start the solver
+          Simulate operating shocks (feedstock costs, grid transmission constraints, capacity limits) and warm-start the solver
           from previous solution vectors without cold factorization.
         </p>
       </div>
@@ -64,72 +96,116 @@ export const DeltaSolveView: React.FC<DeltaSolveViewProps> = ({
         {/* Shock Parameters Panel */}
         <div className="lg:col-span-2 bg-[#121824] border border-[#232e42] rounded-xl p-5 space-y-5">
           <div className="flex items-center justify-between border-b border-[#232e42] pb-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-200">
-              Operating Condition Shock Parameters
-            </h3>
-            <span className="text-[11px] font-mono text-sky-400">Golden Path Refinery</span>
+            <div>
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-200">
+                {schema?.scenario_name || 'Operating Condition Shock Parameters'}
+              </h3>
+              {schema?.domain && (
+                <div className="text-[10px] text-slate-400 font-mono mt-0.5">{schema.domain}</div>
+              )}
+            </div>
+            <span className="text-[11px] font-mono text-sky-400">
+              {modelName || 'Active Model'}
+            </span>
           </div>
 
           <div className="space-y-4 text-xs">
-            <div>
-              <div className="flex justify-between mb-1.5 font-medium">
-                <span className="text-slate-300">Crude A Feedstock Price ($/bbl)</span>
-                <span className="font-mono text-sky-400 font-bold">${crudeAPrice.toFixed(1)}</span>
-              </div>
-              <input
-                type="range"
-                min={50}
-                max={120}
-                step={0.5}
-                value={crudeAPrice}
-                onChange={(e) => setCrudeAPrice(Number(e.target.value))}
-                className="w-full accent-sky-500 bg-slate-800"
-              />
-              <div className="flex justify-between text-[10px] text-slate-500 font-mono mt-0.5">
-                <span>Baseline: $72.5</span>
-                <span>Shock: +{(((crudeAPrice - 72.5) / 72.5) * 100).toFixed(1)}%</span>
-              </div>
-            </div>
+            {schema && schema.parameters ? (
+              schema.parameters.map((p: any) => {
+                const val = paramValues[p.key] ?? p.default ?? p.min;
+                return (
+                  <div key={p.key} className="space-y-1">
+                    <div className="flex justify-between font-medium">
+                      <span className="text-slate-300">{p.display_name}</span>
+                      <span className="font-mono text-sky-400 font-bold">
+                        {val} {p.unit}
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={p.min}
+                      max={p.max}
+                      step={p.step}
+                      value={val}
+                      onChange={(e) =>
+                        setParamValues((prev) => ({
+                          ...prev,
+                          [p.key]: Number(e.target.value)
+                        }))
+                      }
+                      className="w-full accent-sky-500 bg-slate-800"
+                    />
+                    <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+                      <span>Min: {p.min} {p.unit}</span>
+                      {p.impact && <span className="text-slate-400 truncate max-w-[240px]">{p.impact}</span>}
+                      <span>Max: {p.max} {p.unit}</span>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <>
+                <div>
+                  <div className="flex justify-between mb-1.5 font-medium">
+                    <span className="text-slate-300">Crude A Feedstock Price ($/bbl)</span>
+                    <span className="font-mono text-sky-400 font-bold">${crudeAPrice.toFixed(1)}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={50}
+                    max={120}
+                    step={0.5}
+                    value={crudeAPrice}
+                    onChange={(e) => setCrudeAPrice(Number(e.target.value))}
+                    className="w-full accent-sky-500 bg-slate-800"
+                  />
+                  <div className="flex justify-between text-[10px] text-slate-500 font-mono mt-0.5">
+                    <span>Baseline: $72.5</span>
+                    <span>Shock: +{(((crudeAPrice - 72.5) / 72.5) * 100).toFixed(1)}%</span>
+                  </div>
+                </div>
 
-            <div>
-              <div className="flex justify-between mb-1.5 font-medium">
-                <span className="text-slate-300">Diesel Minimum Demand Commitment (bbl/day)</span>
-                <span className="font-mono text-sky-400 font-bold">{dieselDemand.toLocaleString()}</span>
-              </div>
-              <input
-                type="range"
-                min={20000}
-                max={50000}
-                step={500}
-                value={dieselDemand}
-                onChange={(e) => setDieselDemand(Number(e.target.value))}
-                className="w-full accent-sky-500 bg-slate-800"
-              />
-              <div className="flex justify-between text-[10px] text-slate-500 font-mono mt-0.5">
-                <span>Baseline: 30,000</span>
-                <span>Shock: +{(((dieselDemand - 30000) / 30000) * 100).toFixed(1)}%</span>
-              </div>
-            </div>
+                <div>
+                  <div className="flex justify-between mb-1.5 font-medium">
+                    <span className="text-slate-300">Diesel Minimum Demand Commitment (bbl/day)</span>
+                    <span className="font-mono text-sky-400 font-bold">{dieselDemand.toLocaleString()}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={20000}
+                    max={50000}
+                    step={500}
+                    value={dieselDemand}
+                    onChange={(e) => setDieselDemand(Number(e.target.value))}
+                    className="w-full accent-sky-500 bg-slate-800"
+                  />
+                  <div className="flex justify-between text-[10px] text-slate-500 font-mono mt-0.5">
+                    <span>Baseline: 30,000</span>
+                    <span>Shock: +{(((dieselDemand - 30000) / 30000) * 100).toFixed(1)}%</span>
+                  </div>
+                </div>
 
-            <div>
-              <div className="flex justify-between mb-1.5 font-medium">
-                <span className="text-slate-300">CDU Unit Operating Throughput Limit (bbl/day)</span>
-                <span className="font-mono text-sky-400 font-bold">{cduCapacity.toLocaleString()}</span>
-              </div>
-              <input
-                type="range"
-                min={70000}
-                max={120000}
-                step={1000}
-                value={cduCapacity}
-                onChange={(e) => setCduCapacity(Number(e.target.value))}
-                className="w-full accent-sky-500 bg-slate-800"
-              />
-              <div className="flex justify-between text-[10px] text-slate-500 font-mono mt-0.5">
-                <span>Baseline: 100,000</span>
-                <span>Throttled Limit</span>
-              </div>
-            </div>
+                <div>
+                  <div className="flex justify-between mb-1.5 font-medium">
+                    <span className="text-slate-300">CDU Unit Operating Throughput Limit (bbl/day)</span>
+                    <span className="font-mono text-sky-400 font-bold">{cduCapacity.toLocaleString()}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={70000}
+                    max={120000}
+                    step={1000}
+                    value={cduCapacity}
+                    onChange={(e) => setCduCapacity(Number(e.target.value))}
+                    className="w-full accent-sky-500 bg-slate-800"
+                  />
+                  <div className="flex justify-between text-[10px] text-slate-500 font-mono mt-0.5">
+                    <span>Baseline: 100,000</span>
+                    <span>Throttled Limit</span>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           <div className="pt-2 flex justify-end">

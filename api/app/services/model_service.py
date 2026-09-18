@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from api.app.core.ids import model_id, version_id
 from api.app.core.hashing import compute_sha256_bytes
 from api.app.core.errors import NotFoundException, ValidationException
-from api.app.db.models import ModelRecord, ModelVersionRecord
+from api.app.db.models import ModelRecord, ModelVersionRecord, ScenarioSchemaRecord
 from api.app.repositories.model_repository import ModelRepository
 from api.app.services.artifact_service import ArtifactService
 from api.app.schemas.models import ModelImportResponse, ModelSummary, ModelDetail, ModelVersionSummary

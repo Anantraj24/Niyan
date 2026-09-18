@@ -39,6 +39,7 @@ class AnalysisService:
         cmd = CommandBuilder.build_analyze_cmd(version.source_path, str(output_json_path))
         proc = await asyncio.create_subprocess_exec(
             *cmd,
+            stdin=asyncio.subprocess.DEVNULL,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE
         )

@@ -97,6 +97,12 @@ async def test_models_flow_and_solve():
         assert v_data["verdict"] == "VERIFIED"
         assert v_data["model_hash_match"] is True
 
+        # 5b. Proof Pack ZIP Export
+        exp_res = await ac.get(f"/api/v1/solves/{solve_id}/proof/export")
+        assert exp_res.status_code == 200
+        assert exp_res.headers["content-type"] == "application/zip"
+        assert len(exp_res.content) > 100
+
         # 6. DeltaSolve re-solve
         delta_res = await ac.post(f"/api/v1/solves/{solve_id}/resolve", json={
             "changes": {

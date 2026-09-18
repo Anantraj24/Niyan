@@ -98,6 +98,10 @@ Build out the production-grade Frontend UI in `frontend/` implementing the Indus
   - Backend: Added `GET /api/v1/models/{model_id}/schema` endpoint in [models.py](file:///e:/Niyan/api/app/routers/models.py) and `get_scenario_schema` in [model_service.py](file:///e:/Niyan/api/app/services/model_service.py).
   - Frontend: Enhanced [DeltaSolveView.tsx](file:///e:/Niyan/frontend/src/features/DeltaSolveView.tsx) to query and dynamically render model-specific operating condition shock sliders (e.g. natural gas index, carbon cap target, line derating for energy grid; crude price and diesel demand for refinery).
   - Automated Testing: Added scenario schema validation step to [test_api.py](file:///e:/Niyan/api/tests/test_api.py).
+- [x] Standalone Proof Pack In-Browser ZIP Export:
+  - Backend: Added `GET /api/v1/solves/{solve_id}/proof/export` route in [verification.py](file:///e:/Niyan/api/app/routers/verification.py) and `export_proof_pack_bytes` in [verify_service.py](file:///e:/Niyan/api/app/services/verify_service.py) creating on-the-fly zip archives with `CERTIFICATE.json`, `solution.json`, `proof_details.json`, and `verification.json`.
+  - Frontend: Added "Download Proof Pack (.zip)" button in [ProofPackView.tsx](file:///e:/Niyan/frontend/src/features/ProofPackView.tsx).
+  - Automated Testing: Added zip download verification step to [test_api.py](file:///e:/Niyan/api/tests/test_api.py).
 
 ## In-Progress Work
 - [ ] Push all updates to remote repository.
@@ -117,7 +121,7 @@ Build out the production-grade Frontend UI in `frontend/` implementing the Indus
 
 ## Git / Branch Status
 - Branch: `main`
-- Last commit: `c54875d`
+- Last pushed commit: `92dd776`
 
 ## Exact Next Step
-Stage, commit, and push dynamic scenario schema feature to `origin/main`.
+Stage, commit, and push in-browser Proof Pack export feature to `origin/main`.

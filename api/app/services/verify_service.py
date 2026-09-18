@@ -105,3 +105,55 @@ class VerifyService:
             created_at=record.created_at,
             completed_at=record.completed_at
         )
+
+    def export_proof_pack_bytes(self, solve_id: str) -> bytes:
+        import io
+        import zipfile
+        from api.app.repositories.model_repository import ModelRepository
+
+        job = self.solve_repo.get_solve(solve_id)
+        if not job:
+            raise NotFoundException("SolveJob", solve_id)
+
+        verification = self.get_verification(solve_id)
+        if not verification:
+            raise NotFoundException("Verification", solve_id)
+
+        model_repo = ModelRepository(self.db)
+        version = model_repo.get_version(job.model_version_id)
+        model = model_repo.get_model(version.model_id) if version else None
+        model_name = model.display_name if model else job.model_version_id
+
+        certificate = {
+            "platform": "NIYAM-X Sovereign Mathematical Optimization",
+            "standard": "SOVEREIGN-PROOF-PACK-V1",
+            "solve_id": solve_id,
+            "verification_id": verification.verification_id,
+            "model_id": version.model_id if version else None,
+            "model_name": model_name,
+            "model_sha256": version.sha256 if version else "unknown",
+            "hash_matches": verification.model_hash_match,
+            "verdict": verification.verdict,
+            "max_primal_violation": verification.max_primal_violation,
+            "max_bound_violation": verification.max_bound_violation,
+            "max_integrality_violation": verification.max_integrality_violation,
+            "objective_error": verification.objective_error,
+            "engine_guarantee": "Clean-Room Zero-Optimizer Independent Verification",
+            "verified_at": verification.completed_at.isoformat() if verification.completed_at else None
+        }
+
+        bio = io.BytesIO()
+        with zipfile.ZipFile(bio, "w", zipfile.ZIP_DEFLATED) as zf:
+            zf.writestr("CERTIFICATE.json", json.dumps(certificate, indent=2))
+            solve_dir = Path(job.artifact_dir)
+            sol_path = solve_dir / "solution.json"
+            if sol_path.exists():
+                zf.write(sol_path, arcname="solution.json")
+            prf_path = solve_dir / "proof.json"
+            if prf_path.exists():
+                zf.write(prf_path, arcname="proof_details.json")
+            v_path = solve_dir / "verification.json"
+            if v_path.exists():
+                zf.write(v_path, arcname="verification.json")
+        bio.seek(0)
+        return bio.getvalue()

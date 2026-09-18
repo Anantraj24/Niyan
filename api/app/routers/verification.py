@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Response
 from sqlalchemy.orm import Session
 from api.app.db.session import get_db
 from api.app.services.verify_service import VerifyService
@@ -19,3 +19,16 @@ def get_verification(solve_id: str, db: Session = Depends(get_db)):
     if not result:
         raise NotFoundException("Verification for solve", solve_id)
     return result
+
+@router.get("/solves/{solve_id}/proof/export")
+def export_proof_pack(solve_id: str, db: Session = Depends(get_db)):
+    service = VerifyService(db)
+    zip_bytes = service.export_proof_pack_bytes(solve_id)
+    return Response(
+        content=zip_bytes,
+        media_type="application/zip",
+        headers={
+            "Content-Disposition": f'attachment; filename="proof_pack_{solve_id}.zip"'
+        }
+    )
+

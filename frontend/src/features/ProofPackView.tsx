@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, CheckCircle2, FileCheck, Hash } from 'lucide-react';
+import { ShieldCheck, CheckCircle2, FileCheck, Hash, Download } from 'lucide-react';
 import type { VerificationResponse, SolveStatusResponse } from '../api/types';
 import { StatusBadge } from '../components/StatusBadge';
 import { MetricCard } from '../components/MetricCard';
@@ -50,14 +50,26 @@ export const ProofPackView: React.FC<ProofPackViewProps> = ({
           </p>
         </div>
 
-        <button
-          onClick={onVerify}
-          disabled={isVerifying}
-          className="flex items-center gap-2 px-4 py-2 rounded bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-slate-950 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
-        >
-          <CheckCircle2 className="w-4 h-4" />
-          {isVerifying ? 'Running Verifier...' : 'Re-Run Verification'}
-        </button>
+        <div className="flex items-center gap-3">
+          {verification && (
+            <a
+              href={`/api/v1/solves/${activeSolve.solve_id}/proof/export`}
+              download={`proof_pack_${activeSolve.solve_id}.zip`}
+              className="flex items-center gap-2 px-3.5 py-2 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold tracking-wider transition-colors cursor-pointer"
+            >
+              <Download className="w-3.5 h-3.5 text-sky-400" />
+              Download Proof Pack (.zip)
+            </a>
+          )}
+          <button
+            onClick={onVerify}
+            disabled={isVerifying}
+            className="flex items-center gap-2 px-4 py-2 rounded bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-slate-950 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+          >
+            <CheckCircle2 className="w-4 h-4" />
+            {isVerifying ? 'Running Verifier...' : 'Re-Run Verification'}
+          </button>
+        </div>
       </div>
 
       {/* Primary Verification Metrics */}

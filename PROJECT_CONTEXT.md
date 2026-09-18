@@ -91,6 +91,9 @@ Build out the production-grade Frontend UI in `frontend/` implementing the Indus
   - `tools/import_mps.py`: Standalone CLI utility to import arbitrary MPS/LP models, attach parameter schemas, and run pre-solve Model X-Ray diagnostics.
   - `tools/export_proof_pack.py`: Standalone CLI utility to package independent cryptographic Proof Pack certificates, solutions, and mathematical validation into a compliance-ready zip bundle.
   - `demo/energy_grid/`: Added 5-Bus Electric Power Dispatch model (`energy_grid_lp.mps`) and parameter scenario schema (`scenario_schema.json`) for grid stress and carbon cap tightening simulations.
+- [x] In-Browser Model Importer Modal:
+  - Added interactive model import modal in [ModelOverviewView.tsx](file:///e:/Niyan/frontend/src/features/ModelOverviewView.tsx) with file drag-and-drop, metadata inputs, and multipart/form-data upload to `/api/v1/models/import`.
+  - Wired live model selection reload and automatic Model X-Ray diagnostic trigger on import in [App.tsx](file:///e:/Niyan/frontend/src/App.tsx).
 
 ## In-Progress Work
 - [ ] Push all updates to remote repository.
@@ -110,7 +113,7 @@ Build out the production-grade Frontend UI in `frontend/` implementing the Indus
 
 ## Git / Branch Status
 - Branch: `main`
-- Last pushed commit: `f66cceb`
+- Last pushed commit: `9903b5c`
 
 ## Exact Next Step
-Stage, commit, and push developer tooling and energy grid demo assets to `origin/main`.
+Stage, commit, and push in-browser model importer feature to `origin/main`.

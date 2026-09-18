@@ -22,6 +22,17 @@ export interface HardwareResponse {
   gpu: GPUInfo;
 }
 
+export interface ModelImportResponse {
+  model_id: string;
+  version_id: string;
+  display_name: string;
+  format: string;
+  sha256: string;
+  dataset_kind: string;
+  size_bytes: number;
+  created_at: string;
+}
+
 export interface ModelSummary {
   model_id: string;
   display_name: string;

@@ -3,6 +3,7 @@ import type {
   HardwareResponse,
   ModelSummary,
   ModelDetail,
+  ModelImportResponse,
   AnalysisResponse,
   SolveConfig,
   CreateSolveResponse,
@@ -28,6 +29,30 @@ export async function getHardware(): Promise<HardwareResponse> {
 export async function getModels(): Promise<ModelSummary[]> {
   const res = await fetch(`${BASE_URL}/models`);
   if (!res.ok) throw new Error('Failed to fetch models');
+  return res.json();
+}
+
+export async function uploadModel(
+  file: File,
+  displayName?: string,
+  datasetKind: string = 'user'
+): Promise<ModelImportResponse> {
+  const formData = new FormData();
+  formData.append('file', file);
+  if (displayName) {
+    formData.append('display_name', displayName);
+  }
+  formData.append('dataset_kind', datasetKind);
+
+  const res = await fetch(`${BASE_URL}/models/import`, {
+    method: 'POST',
+    body: formData
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: 'Upload failed' }));
+    throw new Error(err.detail || 'Failed to import model');
+  }
   return res.json();
 }
 

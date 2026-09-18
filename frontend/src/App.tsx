@@ -102,6 +102,17 @@ export const App: React.FC = () => {
     loadModelData();
   }, [selectedModelId]);
 
+  // Handler: Model Imported via UI
+  const handleModelImported = async (newModelId: string) => {
+    try {
+      const mList = await getModels();
+      setModels(mList);
+      setSelectedModelId(newModelId);
+    } catch (err) {
+      console.error('Failed to reload models after import:', err);
+    }
+  };
+
   // Handler: Run Model X-Ray
   const handleRunXRay = async () => {
     if (!selectedModelId) return;
@@ -255,6 +266,7 @@ export const App: React.FC = () => {
               onRunXRay={handleRunXRay}
               onGoToAutopilot={() => setActiveTab('autopilot')}
               onGoToSolve={() => setActiveTab('solve')}
+              onModelImported={handleModelImported}
               isAnalyzing={isAnalyzing}
             />
           )}

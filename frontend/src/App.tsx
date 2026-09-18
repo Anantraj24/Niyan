@@ -21,7 +21,8 @@ import {
   getSolveStatus,
   resolveDelta,
   verifySolve,
-  runBenchmark
+  runBenchmark,
+  API_BASE
 } from './api/client';
 import type {
   HealthResponse,
@@ -139,7 +140,7 @@ export const App: React.FC = () => {
       setActiveTab('solve');
 
       // Listen for SSE Events
-      const eventSource = new EventSource(`/api/v1/solves/${created.solve_id}/events`);
+      const eventSource = new EventSource(`${API_BASE}/api/v1/solves/${created.solve_id}/events`);
 
       eventSource.addEventListener('solver.iteration', (e: MessageEvent) => {
         try {

@@ -3,6 +3,7 @@ import { ShieldCheck, CheckCircle2, FileCheck, Hash, Download } from 'lucide-rea
 import type { VerificationResponse, SolveStatusResponse } from '../api/types';
 import { StatusBadge } from '../components/StatusBadge';
 import { MetricCard } from '../components/MetricCard';
+import { API_BASE } from '../api/client';
 
 interface ProofPackViewProps {
   verification?: VerificationResponse;
@@ -53,7 +54,7 @@ export const ProofPackView: React.FC<ProofPackViewProps> = ({
         <div className="flex items-center gap-3">
           {verification && (
             <a
-              href={`/api/v1/solves/${activeSolve.solve_id}/proof/export`}
+              href={`${API_BASE}/api/v1/solves/${activeSolve.solve_id}/proof/export`}
               download={`proof_pack_${activeSolve.solve_id}.zip`}
               className="flex items-center gap-2 px-3.5 py-2 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold tracking-wider transition-colors cursor-pointer"
             >

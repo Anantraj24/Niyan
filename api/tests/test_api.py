@@ -7,6 +7,9 @@ import httpx
 WORKSPACE_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(WORKSPACE_ROOT))
 
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
 from api.app.main import app
 from api.app.db.session import init_db
 

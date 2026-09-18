@@ -1,6 +1,6 @@
-# NIYAM-X — Antigravity START HERE
+# NIYAM-X — Developer & Contributor Guide
 
-> Purpose: let an Antigravity agent understand the project and begin work without scanning the entire repository.
+> Purpose: Project architecture, core principles, subsystem boundaries, and quick-start reference for engineers and contributors.
 
 ## 0.1 One-sentence product definition
 
@@ -56,11 +56,11 @@ Large artifacts   -> local filesystem
 
 ## 0.4 Mandatory read order
 
-Every agent MUST read:
+Recommended reading order for developers:
 1. `00_START_HERE.md`
 2. `01_PRODUCT_BRAIN.md`
 3. `02_SYSTEM_ARCHITECTURE.md`
-4. `14_ANTIGRAVITY_WORK_PROTOCOL.md`
+4. `14_DEVELOPMENT_WORK_PROTOCOL.md`
 
 Then read only task-specific docs:
 
@@ -152,22 +152,10 @@ Use these names consistently:
 
 Do not rename these casually.
 
-## 0.9 Agent kickoff prompt
+## 0.9 Engineering Workflow Checklist
 
-```text
-Read docs/antigravity/00_START_HERE.md first.
-Then read the mandatory docs it names and only the task-specific docs for this task.
-Do not scan the entire repository.
-
-Task: <task>
-
-Before coding:
-- identify the exact files you expect to modify,
-- restate the relevant API/data contracts,
-- call out any mismatch between docs and code.
-
-Then implement only the task, run relevant tests, and report:
-- changed files,
-- test/build results,
-- unresolved issues.
-```
+When developing features:
+1. Review relevant subsystem specifications.
+2. Confirm target APIs and data contracts.
+3. Verify changes with unit tests and end-to-end integration tests.
+4. Check that mathematical and cryptographic verification passes.

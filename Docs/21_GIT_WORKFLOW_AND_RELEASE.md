@@ -1,6 +1,6 @@
 # NIYAM-X — Professional Git Workflow, Push Policy, and Release Discipline
 
-> Purpose: define exactly how NIYAM-X code is committed, reviewed, pushed, merged, tagged, and released so Antigravity and human contributors do not destabilize the project.
+> Purpose: define exactly how NIYAM-X code is committed, reviewed, pushed, merged, tagged, and released to maintain codebase stability and release integrity.
 
 ---
 
@@ -232,7 +232,7 @@ unless it is the initial repository bootstrap.
 
 # 6. REQUIRED PRE-COMMIT CHECK
 
-Before every commit, Antigravity must determine which checks apply.
+Before every commit, developers must determine which checks apply.
 
 ## Native C++ changes
 
@@ -386,7 +386,7 @@ git diff
 git diff --staged
 ```
 
-Antigravity must review:
+Developers must review:
 
 - unexpected files
 - generated binaries
@@ -409,7 +409,7 @@ Prefer targeted staging:
 ```bash
 git add core/linalg/csr_matrix.cpp
 git add tests/test_csr.cpp
-git add docs/antigravity/...
+git add Docs/...
 ```
 
 ---
@@ -560,7 +560,7 @@ git rebase origin/main
 
 Resolve conflicts carefully.
 
-Do not let an automated agent resolve numerical solver conflicts without reviewing semantics.
+Do not auto-merge or blindly resolve numerical solver conflicts without reviewing mathematical semantics.
 
 Especially inspect conflicts in:
 
@@ -600,7 +600,7 @@ git push --force-with-lease
 
 Only after confirming nobody else depends on the branch.
 
-Antigravity must never force-push `main` or `develop`.
+Never force-push to `main` or `develop`.
 
 ---
 
@@ -763,7 +763,7 @@ contracts
 - build
 
 `contracts`:
-- ensure required Antigravity docs exist
+- ensure required architecture docs exist
 - optional schema checks
 
 CUDA remains separate until GPU runner exists.
@@ -936,24 +936,24 @@ Prefer revert over destructive history rewrite on shared branches.
 
 ---
 
-# 26. ANTIGRAVITY GIT BEHAVIOR
+# 26. AUTOMATED & CI GIT DISCIPLINE
 
-Antigravity MUST NOT automatically:
+CI and automated scripts MUST NOT:
 
 - commit unrelated files;
-- push to `main`;
+- push to `main` directly without PR review;
 - force-push;
-- create tags;
-- merge PRs;
+- create tags without authorization;
+- merge PRs without verification;
 - rewrite shared history;
 - delete branches;
 - change `.gitignore` broadly;
 - commit secrets;
 - commit generated solver artifacts.
 
-Unless the user explicitly asks Antigravity to execute Git operations, it should prepare changes and provide the exact recommended commands.
+Always verify changes with the exact recommended commands.
 
-If Git execution is requested, Antigravity should still show:
+Before committing and pushing, developers must verify:
 
 ```text
 branch
@@ -963,11 +963,9 @@ tests passed
 target remote
 ```
 
-before push.
-
 ---
 
-# 27. ANTIGRAVITY PRE-PUSH REPORT FORMAT
+# 27. PRE-PUSH AUDIT REPORT FORMAT
 
 Before recommending or performing push, output:
 

@@ -1,10 +1,10 @@
-# NIYAM-X — MASTER ANTIGRAVITY CONTEXT
+# NIYAM-X — MASTER TECHNICAL CONTEXT
 
 > This file concatenates the core contract docs for one-shot context loading. Prefer modular docs for task work.
 
-# NIYAM-X — Antigravity START HERE
+# NIYAM-X — Developer & Contributor Guide
 
-> Purpose: let an Antigravity agent understand the project and begin work without scanning the entire repository.
+> Purpose: Architecture overview and quick-start reference for engineers and contributors.
 
 ## 0.1 One-sentence product definition
 
@@ -60,11 +60,11 @@ Large artifacts   -> local filesystem
 
 ## 0.4 Mandatory read order
 
-Every agent MUST read:
+Recommended reading order for developers:
 1. `00_START_HERE.md`
 2. `01_PRODUCT_BRAIN.md`
 3. `02_SYSTEM_ARCHITECTURE.md`
-4. `14_ANTIGRAVITY_WORK_PROTOCOL.md`
+4. `14_DEVELOPMENT_WORK_PROTOCOL.md`
 
 Then read only task-specific docs:
 
@@ -155,25 +155,13 @@ Use these names consistently:
 
 Do not rename these casually.
 
-## 0.9 Agent kickoff prompt
+## 0.9 Engineering Workflow Checklist
 
-```text
-Read docs/antigravity/00_START_HERE.md first.
-Then read the mandatory docs it names and only the task-specific docs for this task.
-Do not scan the entire repository.
-
-Task: <task>
-
-Before coding:
-- identify the exact files you expect to modify,
-- restate the relevant API/data contracts,
-- call out any mismatch between docs and code.
-
-Then implement only the task, run relevant tests, and report:
-- changed files,
-- test/build results,
-- unresolved issues.
-```
+When developing features:
+1. Review relevant subsystem specifications.
+2. Confirm target APIs and data contracts.
+3. Verify changes with unit tests and end-to-end integration tests.
+4. Check that mathematical and cryptographic verification passes.
 
 
 ---
@@ -2476,11 +2464,11 @@ Individual rows can fail without entire benchmark run failing if configured to c
 
 ---
 
-# NIYAM-X — Antigravity Work Protocol
+# NIYAM-X — Engineering & Development Protocol
 
 ## 1. Purpose
 
-Prevent agents from wasting time rescanning the repository or rewriting architecture.
+Maintain rigorous architectural discipline, prevent scope creep, and ensure repeatable, high-reliability development across the NIYAM-X platform.
 
 ## 2. Context loading protocol
 
@@ -2490,7 +2478,7 @@ Mandatory:
 - `00_START_HERE.md`
 - `01_PRODUCT_BRAIN.md`
 - `02_SYSTEM_ARCHITECTURE.md`
-- `14_ANTIGRAVITY_WORK_PROTOCOL.md`
+- `14_DEVELOPMENT_WORK_PROTOCOL.md`
 
 Then task-specific docs only.
 
@@ -2513,7 +2501,7 @@ Do not inspect native branch-and-bound code.
 
 ## 4. Before coding response
 
-Agent must briefly state:
+Developer checklist:
 - goal
 - docs read
 - files expected to change
@@ -2561,19 +2549,19 @@ Production UI must not silently fall back to canned solve data.
 
 If backend unavailable, show unavailable state.
 
-## 9. Agent stop conditions
+## 9. Stop and clarification conditions
 
-Stop and ask/report rather than improvising if:
+Halt and clarify before proceeding if:
 - solver math is unclear
 - API contract conflicts with code
 - DB migration would destroy existing data
 - verifier semantics are ambiguous
 - requested feature violates clean-room rule
 
-## 10. Recommended Antigravity prompt
+## 10. Recommended development prompt
 
 ```text
-Read docs/antigravity/00_START_HERE.md.
+Read 00_START_HERE.md.
 Follow its required read order for this task.
 Do not scan the full repo.
 
@@ -2671,10 +2659,10 @@ Keep synthetic inputs clearly labeled.
 ## 7. Docs
 
 ```text
-docs/antigravity/
+Docs/
 ```
 
-Contract docs live here.
+Architecture and contract docs live here.
 
 ## 8. Common feature touch sets
 

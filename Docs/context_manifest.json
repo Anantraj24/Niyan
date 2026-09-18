@@ -1,5 +1,5 @@
 {
-  "pack": "NIYAM-X Antigravity Context Pack",
+  "pack": "NIYAM-X Technical Context Pack",
   "version": "1.1",
   "entrypoint": "00_START_HERE.md",
   "one_shot_context": "MASTER_CONTEXT.md",
@@ -18,7 +18,7 @@
     "11_TESTING_QA.md",
     "12_LOCAL_DEV_RUNBOOK.md",
     "13_SECURITY_OBSERVABILITY.md",
-    "14_ANTIGRAVITY_WORK_PROTOCOL.md",
+    "14_DEVELOPMENT_WORK_PROTOCOL.md",
     "15_FILE_OWNERSHIP_MAP.md",
     "16_ACCEPTANCE_CRITERIA.md",
     "17_DEMO_GOLDEN_PATH.md",
@@ -29,5 +29,5 @@
     "MASTER_CONTEXT.md",
     "README.md"
   ],
-  "recommended_repo_path": "docs/antigravity/"
+  "recommended_repo_path": "Docs/"
 }

@@ -1,6 +1,6 @@
 # NIYAM-X — File Ownership Map
 
-This is the map agents should use instead of scanning the whole project.
+Subsystem mapping and ownership boundaries for development across the project.
 
 ## 1. Native core
 
@@ -15,7 +15,7 @@ core/cuda/        CUDA backend
 ```
 
 Change rule:
-- frontend/backend agents should not touch these unless task explicitly concerns native integration.
+- Keep native solver algorithms decoupled from orchestration layers.
 
 ## 2. Verifier
 
@@ -76,10 +76,10 @@ Keep synthetic inputs clearly labeled.
 ## 7. Docs
 
 ```text
-docs/antigravity/
+Docs/
 ```
 
-Contract docs live here.
+Architecture and contract docs live here.
 
 ## 8. Common feature touch sets
 

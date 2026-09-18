@@ -13,14 +13,14 @@
 - **Numerical Core**: Sovereign C++20 / CUDA CLI (`niyam` solver kernel, `niyam-verify` independent verifier, `niyam-bench` benchmark runner). Clean-room zero external commercial solver rule.
 
 ## Important Files & Specifications
-- `Docs/00_START_HERE.md`: Agent orientation and canonical definitions.
+- `Docs/00_START_HERE.md`: Developer orientation and canonical architecture definitions.
 - `Docs/01_PRODUCT_BRAIN.md`: Core product thesis, modules (Model X-Ray, Solver Autopilot, DeltaSolve, Proof Pack, Flight Recorder).
 - `Docs/02_SYSTEM_ARCHITECTURE.md`: Local-first modular monolith architecture and process boundaries.
 - `Docs/03_FRONTEND_SPEC.md` & `Docs/04_UI_UX_DESIGN_SYSTEM.md`: Frontend layout, design tokens, and components.
 - `Docs/05_BACKEND_SPEC.md` & `Docs/06_API_CONTRACTS.md`: FastAPI architecture and REST/SSE endpoints.
 - `Docs/07_DATABASE_SPEC.md` & `Docs/08_DOMAIN_MODELS.md`: SQLite schema and data contracts.
 - `Docs/09_SOLVER_PROCESS_PROTOCOL.md`: JSON/JSONL protocol between FastAPI and CLI.
-- `Docs/14_ANTIGRAVITY_WORK_PROTOCOL.md` & `Docs/15_FILE_OWNERSHIP_MAP.md`: Development boundaries and file ownership.
+- `Docs/14_DEVELOPMENT_WORK_PROTOCOL.md` & `Docs/15_FILE_OWNERSHIP_MAP.md`: Development boundaries and file ownership.
 - `Docs/17_DEMO_GOLDEN_PATH.md`: Golden path refinery demonstration narrative.
 - `Docs/21_GIT_WORKFLOW_AND_RELEASE.md`: Branching, commit conventions, and release gates.
 
@@ -75,7 +75,7 @@ Build out the production-grade Frontend UI in `frontend/` implementing the Indus
 - [x] End-to-end integration and smoke verification:
   - Live FastAPI backend verified on port 8000.
   - Live Vite frontend dev server verified on port 5173.
-  - Browser subagent completed full automated walkthrough of all 6 mission-critical views:
+  - Automated E2E verification completed for all 6 mission-critical views:
     - Hardware engine detection (RTX 5060 Laptop GPU, CUDA active, Independent Verifier online).
     - Model Library with seeded refinery planning model `mod_fe1e27b70b0e`.
     - Model X-Ray numerical diagnostics (dynamic range 3.3e+0, sparsity 79.63%, 0 flagged issues).

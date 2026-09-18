@@ -9,6 +9,7 @@ from api.app.db.models import VerificationRecord
 from api.app.repositories.solve_repository import SolveRepository
 from api.app.repositories.verification_repository import VerificationRepository
 from api.app.solver_bridge.command_builder import CommandBuilder
+from typing import Optional, List, Dict, Any
 from api.app.schemas.verification import VerificationResponse
 
 class VerifyService:

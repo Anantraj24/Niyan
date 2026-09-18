@@ -22,14 +22,12 @@ FROM python:3.11-slim AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     NIYAM_HOME=/app/.niyam \
-    PORT=8000
+    PORT=10000
 
 WORKDIR /app
 
-# Install system dependencies (build-essential for C++ compilation, curl for healthchecks)
+# Install curl for healthchecks (lightweight, zero bloat)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    cmake \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
@@ -52,11 +50,11 @@ RUN mkdir -p .niyam/artifacts && \
     python tools/seed_demo.py && \
     python tools/import_mps.py -f demo/energy_grid/energy_grid_lp.mps -n "5-Bus Electric Power Dispatch" -s demo/energy_grid/scenario_schema.json --dataset-kind industrial
 
-EXPOSE 8000
+EXPOSE 10000 8000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/api/v1/health || exit 1
+    CMD curl -f http://localhost:${PORT:-10000}/api/v1/health || exit 1
 
 # Start sovereign FastAPI server serving both API and Frontend SPA (respecting dynamic PORT if assigned by Render/Cloud Run)
-CMD ["sh", "-c", "python -m uvicorn api.app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "python -m uvicorn api.app.main:app --host 0.0.0.0 --port ${PORT:-10000}"]

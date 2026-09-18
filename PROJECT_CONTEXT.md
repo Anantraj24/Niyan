@@ -115,10 +115,11 @@ Build out the production-grade Frontend UI in `frontend/` implementing the Indus
   - WebP session recording saved to artifacts: `niyamx_full_system_test_1789752338978.webp`.
 
 - [x] Unified Hosting & Containerization:
-  - Multi-stage production `Dockerfile`: Node.js 20 Alpine stage compiles the React 19 / Vite SPA, and Python 3.11-slim stage hosts the FastAPI REST/SSE backend and sovereign solver kernel with automated healthchecks.
+  - Multi-stage production `Dockerfile`: Node.js 20 Alpine stage compiles the React 19 / Vite SPA, and ultra-lean Python 3.11-slim stage hosts the FastAPI REST/SSE backend and sovereign solver kernel with automated healthchecks.
+  - Render Blueprint (`render.yaml`): Infrastructure-as-code for 1-click zero-error deployment on Render free tier with preconfigured port (10000) and healthcheck endpoint (`/api/v1/health`).
   - Single-port serving: FastAPI dynamically mounts and serves `frontend/dist` static assets at `/` with HTML5 SPA routing fallback whenever built, eliminating CORS and reverse proxy requirements.
   - `docker-compose.yml`: Out-of-the-box local and cloud container orchestration with persistent volume mapping for `.niyam/` data, models, and cryptographic Proof Packs.
-  - `.dockerignore`: Excludes caches, virtualenvs, git history, and node_modules from container contexts.
+  - `.dockerignore`: Excludes caches, virtualenvs, git history, node_modules, `.niyam/`, and local `dist/` from container contexts.
   - Automated test coverage in `api/tests/test_api.py` (`test_root_serves_frontend`).
 
 ## In-Progress Work

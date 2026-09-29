@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+
+:root {
+  --bg: #07090e;
+  --surface: #0e131f;
+  --surface-raised: #151d2e;
+  --border: #1f2b42;
+  --border-subtle: #172033;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent: #0284c7;
+  --accent-light: #38bdf8;
+  --accent-glow: rgba(56, 189, 248, 0.25);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  user-select: none;
+}
+
+/* Background Grid Pattern */
+.bg-grid {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: 
+    linear-gradient(to right, rgba(31, 43, 66, 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(31, 43, 66, 0.3) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glow-ambient {
+  position: absolute;
+  top: -20%; left: 30%; width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(2, 132, 199, 0.12) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Top Navigation Bar */
+.top-header {
+  height: 72px;
+  background: rgba(14, 19, 31, 0.95);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-badge {
+  background: linear-gradient(135deg, #0284c7, #38bdf8);
+  color: #07090e;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 2px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+}
+
+.system-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+.system-subtitle {
+  font-size: 13px;
+  color: var(--accent-light);
+  font-weight: 500;
+}
+
+.header-telemetry {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13px;
+}
+
+.telem-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 10px var(--success);
+}
+
+.status-dot.active-pulse {
+  animation: pulse-dot 1.8s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px var(--success); }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+/* Main Layout */
+.main-viewport {
+  flex: 1;
+  display: flex;
+  z-index: 5;
+  height: calc(1080px - 72px - 56px);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px;
+  background: rgba(14, 19, 31, 0.7);
+  border-right: 1px solid var(--border);
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nav-pillar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.nav-pillar.active {
+  background: rgba(2, 132, 199, 0.15);
+  border-color: var(--accent-light);
+  color: var(--accent-light);
+  box-shadow: 0 0 15px rgba(2, 132, 199, 0.2);
+}
+
+.pillar-num {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* Center Content */
+.content-area {
+  flex: 1;
+  padding: 40px 50px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.scene-heading-box {
+  margin-bottom: 24px;
+}
+
+.scene-tag {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-light);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scene-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+}
+
+/* Bottom Bar */
+.bottom-bar {
+  height: 56px;
+  background: rgba(14, 19, 31, 0.95);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 10;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-family: ui-monospace, monospace;
+}
+
+.timer-badge {
+  background: var(--surface-raised);
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--accent-light);
+  font-weight: 700;
+}
+
+/* UI Card Primitives */
+.card {
+  background: rgba(18, 24, 36, 0.85);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.metric-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: 800;
+  font-family: ui-monospace, monospace;
+  color: var(--text-primary);
+}
+
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="glow-ambient"></div>
+
+<header class="top-header">
+  <div class="brand-section">
+    <div class="logo-badge">NIYAM-X</div>
+    <div>
+      <div class="system-title">Sovereign Adaptive Optimization Engine</div>
+      <div class="system-subtitle">High-Performance Industrial Mathematical Core</div>
+    </div>
+  </div>
+  <div class="header-telemetry">
+    <div class="telem-pill">
+      <div class="status-dot active-pulse"></div>
+      <span>SOLVER ENGINE: ONLINE</span>
+    </div>
+    <div class="telem-pill">
+      <span>BACKEND: C++20 / CUDA 12.8</span>
+    </div>
+    <div class="telem-pill">
+      <span style="color:var(--text-secondary)">SIH 2026 | PS 26119 | TRINETRA 05</span>
+    </div>
+  </div>
+</header>
+
+<div class="main-viewport">
+  <aside class="sidebar">
+    <div style="font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-muted); margin-bottom:4px;">Workflow Architecture</div>
+    <div class="nav-pillar ">
+      <span class="pillar-num">00</span>
+      <span>PLATFORM</span>
+    </div>
+    <div class="nav-pillar  ">
+      <span class="pillar-num">01</span>
+      <span>DIAGNOSE</span>
+    </div>
+    <div class="nav-pillar active ">
+      <span class="pillar-num">02</span>
+      <span>SOLVE</span>
+    </div>
+    <div class="nav-pillar  ">
+      <span class="pillar-num">03</span>
+      <span>ADAPT</span>
+    </div>
+    <div class="nav-pillar  ">
+      <span class="pillar-num">04</span>
+      <span>VERIFY</span>
+    </div>
+
+    <div style="margin-top:auto; padding:16px; background:rgba(21, 29, 46, 0.6); border-radius:8px; border:1px solid var(--border-subtle); font-size:12px; font-family:monospace;">
+      <div style="color:var(--accent-light); font-weight:700; margin-bottom:4px;">RUNTIME ENVIRONMENT</div>
+      <div style="color:var(--text-muted);">PRECISION: FP64 / Mixed</div>
+      <div style="color:var(--text-muted);">COMPUTE: NVIDIA CUDA</div>
+      <div style="color:var(--text-muted);">ALGO: PDHG / Sparse</div>
+    </div>
+  </aside>
+
+  <main class="content-area">
+    <div class="scene-heading-box">
+      <div class="scene-tag">CLIP 06 // NUMERICAL KERNELS</div>
+      <h1 class="scene-title">NIYAM-X C++20 / CUDA Solver Core</h1>
+    </div>
+
+    
+<div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:24px;">
+  <div class="card" style="display:flex; justify-content:space-between; align-items:center; padding:20px 30px;">
+    <div style="display:flex; align-items:center; gap:16px;">
+      <div style="width:48px; height:48px; border-radius:10px; background:linear-gradient(135deg, #0284c7, #38bdf8); display:flex; align-items:center; justify-content:center; font-weight:900; color:#07090e; font-size:20px;">C++</div>
+      <div>
+        <div style="font-size:18px; font-weight:800;">NIYAM-X Core Optimization Architecture</div>
+        <div style="font-size:13px; color:var(--text-muted);">High-throughput Sparse Kernel Implementation (C++20 & CUDA 12.8)</div>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px;">
+      <span style="padding:6px 14px; background:rgba(16, 185, 129, 0.2); border:1px solid var(--success); border-radius:6px; color:var(--success); font-weight:700; font-size:12px;">CUDA ACCELERATED</span>
+      <span style="padding:6px 14px; background:rgba(2, 132, 199, 0.2); border:1px solid var(--accent); border-radius:6px; color:var(--accent-light); font-weight:700; font-size:12px;">CPU FALLBACK READY</span>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;">
+    <div class="card">
+      <div style="font-size:14px; font-weight:700; color:var(--accent-light); margin-bottom:12px;">Sparse SpMV Kernels</div>
+      <div style="font-family:monospace; font-size:13px; color:var(--text-secondary); line-height:1.6; background:#07090e; padding:12px; border-radius:6px;">
+        y &larr; A &times; x &nbsp;(Forward CSR)<br>
+        s &larr; A<sup>T</sup> &times; y (Adjoint CSC)<br>
+        Coalesced GPU global memory reads with warp shuffle reductions
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:14px; font-weight:700; color:var(--accent-light); margin-bottom:12px;">PDHG Iterate Step</div>
+      <div style="font-family:monospace; font-size:13px; color:var(--text-secondary); line-height:1.6; background:#07090e; padding:12px; border-radius:6px;">
+        x<sup>k+1</sup> = proj<sub>X</sub>(x<sup>k</sup> - &tau; A<sup>T</sup> y<sup>k</sup> - &tau; c)<br>
+        x&#772;<sup>k+1</sup> = 2 x<sup>k+1</sup> - x<sup>k</sup><br>
+        y<sup>k+1</sup> = proj<sub>Y</sub>(y<sup>k</sup> + &sigma; A x&#772;<sup>k+1</sup> - &sigma; b)
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:14px; font-weight:700; color:var(--accent-light); margin-bottom:12px;">Memory & Zero-Copy Bridge</div>
+      <div style="font-family:monospace; font-size:13px; color:var(--text-secondary); line-height:1.6; background:#07090e; padding:12px; border-radius:6px;">
+        Pinned Host Memory staging<br>
+        Unified Virtual Addressing<br>
+        Asynchronous CUDA streams for overlapped I/O and telemetry logging
+      </div>
+    </div>
+  </div>
+</div>
+
+  </main>
+</div>
+
+<footer class="bottom-bar">
+  <div>NIYAM-X SOVEREIGN OPTIMIZATION SYSTEM &bull; TEAM TRINETRA 05</div>
+  <div style="display:flex; align-items:center; gap:16px;">
+    <span>SCENE 06 OF 15</span>
+    <span class="timer-badge">02:00 / 06:00</span>
+  </div>
+</footer>
+
+<script>
+
+</script>
+</body>
+</html>

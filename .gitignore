@@ -83,3 +83,4 @@ Desktop.ini
 # Video Production intermediates
 video_production/clips/
 video_production/audio/
+brag-output/*.mp4

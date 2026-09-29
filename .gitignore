@@ -80,3 +80,6 @@ Thumbs.db
 Desktop.ini
 *.zip
 
+# Video Production intermediates
+video_production/clips/
+video_production/audio/

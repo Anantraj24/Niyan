@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+
+:root {
+  --bg: #07090e;
+  --surface: #0e131f;
+  --surface-raised: #151d2e;
+  --border: #1f2b42;
+  --border-subtle: #172033;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent: #0284c7;
+  --accent-light: #38bdf8;
+  --accent-glow: rgba(56, 189, 248, 0.25);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  user-select: none;
+}
+
+/* Background Grid Pattern */
+.bg-grid {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: 
+    linear-gradient(to right, rgba(31, 43, 66, 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(31, 43, 66, 0.3) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glow-ambient {
+  position: absolute;
+  top: -20%; left: 30%; width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(2, 132, 199, 0.12) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Top Navigation Bar */
+.top-header {
+  height: 72px;
+  background: rgba(14, 19, 31, 0.95);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-badge {
+  background: linear-gradient(135deg, #0284c7, #38bdf8);
+  color: #07090e;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 2px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+}
+
+.system-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+.system-subtitle {
+  font-size: 13px;
+  color: var(--accent-light);
+  font-weight: 500;
+}
+
+.header-telemetry {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13px;
+}
+
+.telem-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 10px var(--success);
+}
+
+.status-dot.active-pulse {
+  animation: pulse-dot 1.8s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px var(--success); }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+/* Main Layout */
+.main-viewport {
+  flex: 1;
+  display: flex;
+  z-index: 5;
+  height: calc(1080px - 72px - 56px);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px;
+  background: rgba(14, 19, 31, 0.7);
+  border-right: 1px solid var(--border);
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nav-pillar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.nav-pillar.active {
+  background: rgba(2, 132, 199, 0.15);
+  border-color: var(--accent-light);
+  color: var(--accent-light);
+  box-shadow: 0 0 15px rgba(2, 132, 199, 0.2);
+}
+
+.pillar-num {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* Center Content */
+.content-area {
+  flex: 1;
+  padding: 40px 50px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.scene-heading-box {
+  margin-bottom: 24px;
+}
+
+.scene-tag {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-light);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scene-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+}
+
+/* Bottom Bar */
+.bottom-bar {
+  height: 56px;
+  background: rgba(14, 19, 31, 0.95);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 10;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-family: ui-monospace, monospace;
+}
+
+.timer-badge {
+  background: var(--surface-raised);
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--accent-light);
+  font-weight: 700;
+}
+
+/* UI Card Primitives */
+.card {
+  background: rgba(18, 24, 36, 0.85);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.metric-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: 800;
+  font-family: ui-monospace, monospace;
+  color: var(--text-primary);
+}
+
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="glow-ambient"></div>
+
+<header class="top-header">
+  <div class="brand-section">
+    <div class="logo-badge">NIYAM-X</div>
+    <div>
+      <div class="system-title">Sovereign Adaptive Optimization Engine</div>
+      <div class="system-subtitle">High-Performance Industrial Mathematical Core</div>
+    </div>
+  </div>
+  <div class="header-telemetry">
+    <div class="telem-pill">
+      <div class="status-dot active-pulse"></div>
+      <span>SOLVER ENGINE: ONLINE</span>
+    </div>
+    <div class="telem-pill">
+      <span>BACKEND: C++20 / CUDA 12.8</span>
+    </div>
+    <div class="telem-pill">
+      <span style="color:var(--text-secondary)">SIH 2026 | PS 26119 | TRINETRA 05</span>
+    </div>
+  </div>
+</header>
+
+<div class="main-viewport">
+  <aside class="sidebar">
+    <div style="font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-muted); margin-bottom:4px;">Workflow Architecture</div>
+    <div class="nav-pillar ">
+      <span class="pillar-num">00</span>
+      <span>PLATFORM</span>
+    </div>
+    <div class="nav-pillar active ">
+      <span class="pillar-num">01</span>
+      <span>DIAGNOSE</span>
+    </div>
+    <div class="nav-pillar  ">
+      <span class="pillar-num">02</span>
+      <span>SOLVE</span>
+    </div>
+    <div class="nav-pillar  ">
+      <span class="pillar-num">03</span>
+      <span>ADAPT</span>
+    </div>
+    <div class="nav-pillar  ">
+      <span class="pillar-num">04</span>
+      <span>VERIFY</span>
+    </div>
+
+    <div style="margin-top:auto; padding:16px; background:rgba(21, 29, 46, 0.6); border-radius:8px; border:1px solid var(--border-subtle); font-size:12px; font-family:monospace;">
+      <div style="color:var(--accent-light); font-weight:700; margin-bottom:4px;">RUNTIME ENVIRONMENT</div>
+      <div style="color:var(--text-muted);">PRECISION: FP64 / Mixed</div>
+      <div style="color:var(--text-muted);">COMPUTE: NVIDIA CUDA</div>
+      <div style="color:var(--text-muted);">ALGO: PDHG / Sparse</div>
+    </div>
+  </aside>
+
+  <main class="content-area">
+    <div class="scene-heading-box">
+      <div class="scene-tag">CLIP 04 // MATHEMATICAL HEALTH CHECK</div>
+      <h1 class="scene-title">Model X-Ray Diagnostic Engine</h1>
+    </div>
+
+    
+<div style="flex:1; display:grid; grid-template-columns: 1.1fr 1fr; gap:30px;">
+  <div style="display:flex; flex-direction:column; gap:20px;">
+    <div class="card" style="border-left:4px solid var(--warning);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span style="font-size:18px; font-weight:700;">Mathematical Health & Diagnostic Report</span>
+        <span style="background:rgba(245, 158, 11, 0.2); color:var(--warning); border:1px solid var(--warning); padding:4px 12px; border-radius:4px; font-weight:800; font-family:monospace; font-size:13px;">NUMERICAL RISK: HIGH</span>
+      </div>
+      <p style="font-size:15px; color:var(--text-secondary); line-height:1.5;">
+        Model X-Ray probes the model before dispatching execution, exposing ill-conditioned rows, extreme coefficient spreads, and degenerate bounds.
+      </p>
+    </div>
+
+    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:16px;">
+      <div class="card">
+        <div class="metric-label">Coefficient Dynamic Range</div>
+        <div style="font-size:22px; font-family:monospace; font-weight:800; color:var(--warning);">1.0e-8 &rarr; 1.0e+7</div>
+        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">Span of 15 orders of magnitude</div>
+      </div>
+      <div class="card">
+        <div class="metric-label">Poorly Scaled Rows</div>
+        <div class="metric-value" style="color:var(--danger);">817</div>
+        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">Requires equilibration</div>
+      </div>
+      <div class="card">
+        <div class="metric-label">Fixed Variables Detected</div>
+        <div class="metric-value">421</div>
+        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">Eligible for presolve reduction</div>
+      </div>
+      <div class="card">
+        <div class="metric-label">Equality Ratio</div>
+        <div class="metric-value">42.4%</div>
+        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">High structural tightness</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="display:flex; flex-direction:column; align-items:center; justify-content:center;">
+    <div style="font-size:14px; font-weight:700; color:var(--accent-light); text-transform:uppercase; letter-spacing:1px; margin-bottom:16px;">Model Structural Radar Assessment</div>
+    <svg width="340" height="340" viewBox="0 0 340 340">
+      <polygon points="170,30 290,100 290,240 170,310 50,240 50,100" fill="none" stroke="rgba(31, 43, 66, 0.8)" stroke-width="1.5" />
+      <polygon points="170,70 250,120 250,220 170,270 90,220 90,120" fill="none" stroke="rgba(31, 43, 66, 0.5)" stroke-width="1" />
+      <polygon points="170,110 210,140 210,200 170,230 130,200 130,140" fill="none" stroke="rgba(31, 43, 66, 0.3)" stroke-width="1" />
+      <!-- Radar Area (Scaling, Sparsity, Structure, Risk, Redundancy, Bounds) -->
+      <polygon points="170,45 280,110 240,230 170,290 80,210 70,115" fill="rgba(56, 189, 248, 0.25)" stroke="var(--accent-light)" stroke-width="2.5" />
+      <!-- Labels -->
+      <text x="170" y="20" fill="var(--text-primary)" font-size="12" text-anchor="middle" font-weight="700">SCALING (HIGH)</text>
+      <text x="300" y="105" fill="var(--text-primary)" font-size="12" font-weight="700">SPARSITY (99.95%)</text>
+      <text x="300" y="245" fill="var(--text-primary)" font-size="12" font-weight="700">STRUCTURE (BLOCK)</text>
+      <text x="170" y="330" fill="var(--text-primary)" font-size="12" text-anchor="middle" font-weight="700">NUMERICAL RISK</text>
+      <text x="35" y="245" fill="var(--text-primary)" font-size="12" text-anchor="end" font-weight="700">REDUNDANCY</text>
+      <text x="35" y="105" fill="var(--text-primary)" font-size="12" text-anchor="end" font-weight="700">BOUNDS DENSITY</text>
+    </svg>
+  </div>
+</div>
+
+  </main>
+</div>
+
+<footer class="bottom-bar">
+  <div>NIYAM-X SOVEREIGN OPTIMIZATION SYSTEM &bull; TEAM TRINETRA 05</div>
+  <div style="display:flex; align-items:center; gap:16px;">
+    <span>SCENE 04 OF 15</span>
+    <span class="timer-badge">01:12 / 06:00</span>
+  </div>
+</footer>
+
+<script>
+
+</script>
+</body>
+</html>

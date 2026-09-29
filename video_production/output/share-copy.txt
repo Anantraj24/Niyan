@@ -1,0 +1,15 @@
+# NIYAM-X — Official Launch & Presentation Copy
+
+Meet NIYAM-X: Our sovereign adaptive optimization engine engineered for large-scale industrial decision-making under uncertainty.
+
+Built for Smart India Hackathon 2026 (Problem Statement 26119) by Team TRINETRA 05, NIYAM-X replaces fragile black-box solvers with a 4-stage resilient workflow:
+1. DIAGNOSE: Model X-Ray & explainable structural fingerprinting.
+2. SOLVE: High-throughput C++20 & NVIDIA CUDA PDHG numerical core.
+3. ADAPT: DeltaSolve warm-start re-optimization & parallel Scenario Swarms.
+4. VERIFY: Mathematically isolated Independent Verifier & cryptographic Proof Pack.
+
+Watch the full 6-minute end-to-end presentation and refinery demonstration:
+Video: NIYAM-X_6_Minute_Presentation.mp4 (1080p, 6:00 runtime)
+Poster: NIYAM-X_Poster.jpg
+
+Diagnose the model. Solve intelligently. Adapt to reality. Verify the decision.
